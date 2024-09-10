@@ -1,0 +1,59 @@
+---
+title: Untitled
+author: Justin Landis
+date: last-modified
+format:
+  minideck-typst:
+    keep-typ: true
+paper: "4:3"
+---
+
+::: title-slide
+## Introduction test
+
+*TODO* Create an example file that demonstrates the formatting and features of your format.
+:::
+
+::: slide
+## More Information
+
+You can learn more about creating custom Typst templates here:
+
+::: {.uncover indices="1" from="3"}
+<https://quarto.org/docs/prerelease/1.4/typst.html#custom-formats>
+:::
+
+::: {.only indices="2,3"}
+Content only visible on slides 2 and 3
+:::
+
+
+{{< pin 1 >}}content visible{{< pin 2 >}}
+
+::: {.only indices="3"}
+{{< pinit-highlight 1 2 >}}
+:::
+
+
+:::
+
+
+::: slide
+
+```{=typst}
+#show raw: it => {
+  show regex("pin\d"): it => pin(eval(it.text.slice(3)))
+  it
+}
+```
+
+```{r}
+#| eval: false
+print(pin1"hello world"pin2)
+```
+
+::: {.only indices=2}
+{{< pinit-highlight 1 2 >}}
+:::
+
+:::
