@@ -39,8 +39,12 @@ function has_attr(el, attr)
   return false
 end
 
-function typst_block(string)
-  return pandoc.RawBlock('typst', string)
+function typst_block(string, inline)
+  if inline then
+    return pandoc.RawInline('typst', string)
+  else
+    return pandoc.RawBlock('typst', string)
+  end
 end
 
 function wrap_content(el, front, back)
@@ -50,7 +54,7 @@ function wrap_content(el, front, back)
   return content
 end
 
-function wrap_uncover(el)
+function wrap_uncover(el, inline)
   local typst = "#uncover("
   -- grab arguments
   local indices = has_attr(el, "indices")
@@ -70,10 +74,10 @@ function wrap_uncover(el)
     os.exit(1)
   end
   typst = typst .. ")["
-  return wrap_content(el, typst_block(typst), typst_block("]"))
+  return wrap_content(el, typst_block(typst, inline), typst_block("]", inline))
 end
 
-function wrap_only(el)
+function wrap_only(el, inline)
   local typst = "#only("
   -- grab arguments
   local indices = has_attr(el, "indices")
@@ -93,27 +97,37 @@ function wrap_only(el)
     os.exit(1)
   end
   typst = typst .. ")["
-  return wrap_content(el, typst_block(typst), typst_block("]"))
+  return wrap_content(el, typst_block(typst, inline), typst_block("]", inline))
 end
 
 function Div(el)
-  print(el)
   if has_class(el, "slide") then
     return wrap_content(
       el,
-      typst_block("#slide["), typst_block("]")
+      typst_block("#slide[", false), typst_block("]", false)
     )
   end
   if has_class(el, "title-slide") then
     return wrap_content(
       el,
-      typst_block("#title-slide["), typst_block("]")
+      typst_block("#title-slide[", false), typst_block("]", false)
     )
   end
   if has_class(el, "only") then
-    return wrap_only(el)
+    return wrap_only(el, false)
   end
   if has_class(el, "uncover") then
-    return wrap_uncover(el)
+    return wrap_uncover(el, false)
   end
+  return el
+end
+
+function Span(el)
+  if has_class(el, "only") then
+    return wrap_only(el, true)
+  end
+  if has_class(el, "uncover") then
+    return wrap_uncover(el, true)
+  end
+  return el
 end
