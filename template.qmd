@@ -20,10 +20,14 @@ paper: "4:3"
 You can learn more about creating custom Typst templates here:
 
 ::: {.uncover indices="1" from="3"}
+<!-- .uncover indicates when something is visible -->
+<!-- hidden items still take up space -->
 <https://quarto.org/docs/prerelease/1.4/typst.html#custom-formats>
 :::
 
 ::: {.only indices="2,3"}
+<!-- .only will only be present on their defined slides -->
+<!-- hidden items DO NOT take up space -->
 Content only visible on slides 2 and 3
 :::
 
