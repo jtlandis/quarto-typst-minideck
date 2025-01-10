@@ -42,7 +42,9 @@ function wrap_pinit_point_from_span(el)
     error("pinit-point-from needs a `pin` attribute... `pin=\"1,2\"`")
     os.exit(1)
   end
-  return wrap_content(el, pandoc.RawInline("typst", typst),
+  return wrap_content(
+    el,
+    pandoc.RawInline("typst", typst),
     pandoc.RawInline("typst", "]"))
 end
 
@@ -54,7 +56,9 @@ function wrap_pinit_point_from(el)
     error("pinit-point-from needs a `pin` attribute... `pin=\"1\"`")
     os.exit(1)
   end
-  return wrap_content(el, pandoc.RawBlock("typst", typst),
+  return wrap_content(
+    el,
+    pandoc.RawBlock("typst", typst),
     pandoc.RawBlock("typst", "]"))
 end
 
